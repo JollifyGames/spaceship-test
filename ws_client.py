@@ -2,6 +2,7 @@ import logging
 
 import websocket
 
+import bot_behaviour
 import data_classes
 import stun_client
 import udp_client
@@ -34,6 +35,8 @@ def on_message(ws, message_json):
             raw_message = generic_message["Payload"]
             print("Start game message:", raw_message)
             udp_client.start_listening(stun_client.global_socket)
+            bot_behaviour.run_simulation()
+
     except Exception as e:
         logging.error(f"Error processing message: {e}")
 

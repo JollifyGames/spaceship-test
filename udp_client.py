@@ -27,3 +27,5 @@ def start_listening(sock: socket):
     listening_thread.start()
 
 
+def send_udp_message(global_socket: socket, send_bytes):
+    global_socket.sendto(send_bytes, (EUROPE_VM_IP, UDP_PORT))
