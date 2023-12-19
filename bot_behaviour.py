@@ -5,9 +5,9 @@ import time
 import uuid
 
 import back_end_data_manager
+import stun_client
 import udp_client
 from back_end_data_manager import BackEndDataManager
-from stun_client import global_socket
 
 
 def simulate_ship_movement():
@@ -26,7 +26,7 @@ def simulate_ship_movement():
     payload = f"{packet_count}|{game_id}|{intent_type}|{json_intent}"
 
     send_bytes = payload.encode('utf-8')
-    udp_client.send_udp_message(global_socket, send_bytes)
+    udp_client.send_udp_message(stun_client.global_socket, send_bytes)
     back_end_data_manager.BackEndDataManager.increment_packet_count()
 
 
@@ -42,7 +42,7 @@ def simulate_ship_shoot_laser():
     game_id = back_end_data_manager.BackEndDataManager.get_game_id()
     payload = f"{packet_count}|{game_id}|{intent_type}|{json_intent}"
     send_bytes = payload.encode('utf-8')
-    udp_client.send_udp_message(global_socket, send_bytes)
+    udp_client.send_udp_message(stun_client.global_socket, send_bytes)
     back_end_data_manager.BackEndDataManager.increment_packet_count()
 
 
