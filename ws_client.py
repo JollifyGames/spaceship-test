@@ -1,14 +1,13 @@
 import logging
 
 import websocket
-from websocket import WebSocketApp, WebSocket
+from websocket import WebSocket
 
 import bot_behaviour
 import data_classes
 import stun_client
 import udp_client
 from data_classes import *
-from typing import Type, TypeVar, Dict, Any
 
 EAST_US_CLOUD_WS_URL = "ws://52.186.175.70:8080/room/"
 EUROPE_CLOUD_BASE_URL = "ws://98.67.168.204:8080/room/"

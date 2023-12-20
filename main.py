@@ -1,4 +1,5 @@
 # main.py
+import sys
 from threading import Thread
 import time
 
@@ -46,5 +47,6 @@ def main():
 
 if __name__ == "__main__":
     print("Starting main program")
+    print(sys.executable)
     main()
     print("Main program ended")

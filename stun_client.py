@@ -3,7 +3,6 @@ from typing import Tuple
 import stun
 import socket
 
-# Declare the global socket variable
 global global_socket
 
 
