@@ -10,7 +10,9 @@ import back_end_data_manager
 
 
 def on_play_game_button():
-    nat_type, external_ip, external_port = stun_client.get_ip_info()
+    _, external_ip, external_port = stun_client.get_ip_info()
+    # external_ip, external_port = stun_client.get_ip_port()
+    print(external_ip, external_port)
     player_id = rest_client.send_login_request()
     back_end_data_manager.BackEndDataManager.set_player_id(player_id)
     back_end_data_manager.BackEndDataManager.set_port(external_port)

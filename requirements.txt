@@ -1,0 +1,4 @@
+requests
+pystun3
+msgpack
+websocket
