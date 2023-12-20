@@ -7,6 +7,7 @@ import uuid
 import back_end_data_manager
 import stun_client
 import udp_client
+import ws_client
 from back_end_data_manager import BackEndDataManager
 
 
@@ -47,16 +48,14 @@ def simulate_ship_shoot_laser():
 
 
 def _run_simulation():
-    while True:
-        # Randomly choose a function to run
+    while ws_client.run_simulation:
         random_function = random.choice([simulate_ship_movement, simulate_ship_shoot_laser])
         random_function()
-
         # Wait for 25 milliseconds
         time.sleep(0.025)
 
 
 def start_simulation_thread():
     simulation_thread = threading.Thread(target=_run_simulation)
-    simulation_thread.daemon = True  # Set as a daemon so it automatically stops with the main program
+    simulation_thread.daemon = True
     simulation_thread.start()

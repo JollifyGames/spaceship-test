@@ -1,24 +1,33 @@
 import subprocess
+import threading
 import time
 
 
-def run_script(script_path, times, delay):
-    processes = []
+def run_single_script(script_path, i):
+    print("Starting script...")
+    process = subprocess.Popen(["venv/Scripts/python.exe", script_path])
+    process.wait()
+    print(f"{i} Script finished.")
+
+
+def run_script_concurrently(script_path, times, delay):
+    threads = []
     for i in range(times):
-        print(f"Starting script {i + 1}/{times}")
-        process = subprocess.Popen(["venv/Scripts/python.exe", script_path])
-        processes.append(process)
+        print(f"Starting script {i + 1}/{times} in a new thread")
+        thread = threading.Thread(target=run_single_script, args=(script_path, i + 1))
+        thread.start()
+        threads.append(thread)
         time.sleep(delay)
 
-    for i, process in enumerate(processes):
-        print(f"Waiting for script {i + 1} to finish...")
-        process.wait()
-        print(f"Script {i + 1} finished.")
+    for thread in threads:
+        thread.join()
+
+    print("Tests are completed")
 
 
 if __name__ == "__main__":
     SCRIPT_PATH = "main.py"
-    TIMES = 50
-    DELAY = 3
+    TIMES = 49
+    DELAY = 5
 
-    run_script(SCRIPT_PATH, TIMES, DELAY)
+    run_script_concurrently(SCRIPT_PATH, TIMES, DELAY)

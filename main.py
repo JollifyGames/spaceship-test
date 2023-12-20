@@ -22,10 +22,7 @@ def on_play_game_button():
         back_end_data_manager.BackEndDataManager.set_game_id(game_id=game_response.game_id)
         if game_response:
             udp_client.send_introductory_packet(stun_client.global_socket)
-            ws_thread = Thread(
-                target=lambda: ws_client.connect_websocket(game_id=game_response.game_id, player_id=player_id))
-            ws_thread.daemon = True
-            ws_thread.start()
+            ws_client.connect_websocket(game_id=game_response.game_id, player_id=player_id)
             return True
         else:
             print("Failed to get game response")
@@ -37,17 +34,14 @@ def on_play_game_button():
 
 def main():
     if on_play_game_button():
-        print("Starting main loop")
+        print("Play game button triggered")
         try:
             while ws_client.run_simulation:
-                time.sleep(0.1)
+                time.sleep(0.01)
         except KeyboardInterrupt:
             print("Shutting down...")
-        print("Main program exiting")
+        print("The Game finished")
 
 
 if __name__ == "__main__":
-    print("Starting main program")
-    print(sys.executable)
     main()
-    print("Main program ended")
