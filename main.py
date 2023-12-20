@@ -22,6 +22,7 @@ def on_play_game_button():
             udp_client.send_introductory_packet(stun_client.global_socket)
             ws_thread = Thread(
                 target=lambda: ws_client.connect_websocket(game_id=game_response.game_id, player_id=player_id))
+            ws_thread.daemon = True
             ws_thread.start()
             return True
         else:
@@ -34,12 +35,16 @@ def on_play_game_button():
 
 def main():
     if on_play_game_button():
+        print("Starting main loop")
         try:
-            while True:
+            while ws_client.run_simulation:
                 time.sleep(0.1)
         except KeyboardInterrupt:
             print("Shutting down...")
+        print("Main program exiting")
 
 
 if __name__ == "__main__":
+    print("Starting main program")
     main()
+    print("Main program ended")

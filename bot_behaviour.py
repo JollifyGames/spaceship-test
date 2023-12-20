@@ -46,7 +46,7 @@ def simulate_ship_shoot_laser():
     back_end_data_manager.BackEndDataManager.increment_packet_count()
 
 
-def run_simulation():
+def _run_simulation():
     while True:
         # Randomly choose a function to run
         random_function = random.choice([simulate_ship_movement, simulate_ship_shoot_laser])
@@ -57,6 +57,6 @@ def run_simulation():
 
 
 def start_simulation_thread():
-    simulation_thread = threading.Thread(target=run_simulation)
+    simulation_thread = threading.Thread(target=_run_simulation)
     simulation_thread.daemon = True  # Set as a daemon so it automatically stops with the main program
     simulation_thread.start()

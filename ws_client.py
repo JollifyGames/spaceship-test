@@ -1,6 +1,7 @@
 import logging
 
 import websocket
+from websocket import WebSocketApp, WebSocket
 
 import bot_behaviour
 import data_classes
@@ -9,18 +10,21 @@ import udp_client
 from data_classes import *
 from typing import Type, TypeVar, Dict, Any
 
-
 EAST_US_CLOUD_WS_URL = "ws://52.186.175.70:8080/room/"
 EUROPE_CLOUD_BASE_URL = "ws://98.67.168.204:8080/room/"
 
 T = TypeVar('T')
+
+run_simulation = True
 
 
 def on_open(ws):
     print("Opened connection")
 
 
-def on_message(ws, message_json):
+def on_message(ws: WebSocket, message_json):
+    global run_simulation
+
     try:
         generic_message = json.loads(message_json)
         command = convert_to_websocket_command(generic_message["Command"])
@@ -35,7 +39,11 @@ def on_message(ws, message_json):
             raw_message = generic_message["Payload"]
             print("Start game message:", raw_message)
             udp_client.start_listening(stun_client.global_socket)
-            bot_behaviour.run_simulation()
+            bot_behaviour.start_simulation_thread()
+        elif command in [WebSocketCommand.WIN, WebSocketCommand.LOSE]:
+            print("Game lost or won. the socket needs to be closed")
+            run_simulation = False
+            ws.close()
 
     except Exception as e:
         logging.error(f"Error processing message: {e}")
