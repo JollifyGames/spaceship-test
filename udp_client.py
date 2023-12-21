@@ -24,11 +24,16 @@ def _listen_udp_packets(sock: socket):
             print(f"Error receiving data: {e}")
 
 
-def start_listening(sock: socket):
+def start_listening_udp_packets(sock: socket):
     listening_thread = threading.Thread(target=_listen_udp_packets, args=(sock,))
     listening_thread.daemon = True
     listening_thread.start()
 
 
 def send_udp_message(global_socket: socket, send_bytes):
-    global_socket.sendto(send_bytes, (EUROPE_VM_IP, UDP_PORT))
+    try:
+        global_socket.sendto(send_bytes, (EUROPE_VM_IP, UDP_PORT))
+    except socket.timeout:
+        print("Timeout occurred while sending UDP message")
+    except Exception as e:
+        print(f"Error sending UDP message: {e}")

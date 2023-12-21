@@ -30,17 +30,11 @@ def on_message(ws: WebSocket, message_json):
         generic_message = json.loads(message_json)
         command = convert_to_websocket_command(generic_message["Command"])
 
-        if command is None:
-            logging.error("Unrecognized command received")
-            return
-
         if command == WebSocketCommand.START:
-            raw_message = generic_message["Payload"]
             print("Game Started")
-            udp_client.start_listening(stun_client.global_socket)
+            udp_client.start_listening_udp_packets(stun_client.global_socket)
             bot_behaviour.start_simulation_thread()
         elif command in [WebSocketCommand.WIN, WebSocketCommand.LOSE]:
-            raw_message = generic_message["Payload"]
             print("Game Stopped")
             run_simulation = False
 

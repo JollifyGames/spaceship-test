@@ -27,7 +27,7 @@ def run_script_concurrently(script_path, times, delay):
 
 if __name__ == "__main__":
     SCRIPT_PATH = "main.py"
-    TIMES = 49
-    DELAY = 5
+    TIMES = 200
+    DELAY = 2
 
     run_script_concurrently(SCRIPT_PATH, TIMES, DELAY)
