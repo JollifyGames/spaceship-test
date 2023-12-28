@@ -8,17 +8,26 @@ import back_end_data_manager
 import stun_client
 import udp_client
 import ws_client
+from UniqueIdGenerator import CommandIdGenerator
 from back_end_data_manager import BackEndDataManager
+from datetime import datetime
+import tzlocal
 
 
 def simulate_ship_movement():
     intent_type = "BB"
     move_x = random.uniform(-1, 1)
     move_y = random.uniform(-1, 1)
+    local_tz = tzlocal.get_localzone()
+    aware_datetime = datetime.now(local_tz)
+    datetime_str = aware_datetime.isoformat()
+
     move_intent = {
         "HorizontalMovement": move_x,
         "VerticalMovement": move_y,
-        "PlayerId": back_end_data_manager.BackEndDataManager.get_player_id()
+        "PlayerId": back_end_data_manager.BackEndDataManager.get_player_id(),
+        "CommandId": CommandIdGenerator.generate_unique_command_id(),
+        "Timestamp": datetime_str
     }
     json_intent = json.dumps(move_intent)
 
@@ -33,10 +42,15 @@ def simulate_ship_movement():
 
 def simulate_ship_shoot_laser():
     intent_type = "BC"
+    local_tz = tzlocal.get_localzone()
+    aware_datetime = datetime.now(local_tz)
+    datetime_str = aware_datetime.isoformat()
     laser_id = str(uuid.uuid4())
     shoot_intent = {
         "LaserId": laser_id,
-        "PlayerId": BackEndDataManager.get_player_id()
+        "PlayerId": BackEndDataManager.get_player_id(),
+        "CommandId": CommandIdGenerator.generate_unique_command_id(),
+        "Timestamp": datetime_str
     }
     json_intent = json.dumps(shoot_intent)
     packet_count = back_end_data_manager.BackEndDataManager.get_packet_count()
